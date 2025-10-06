@@ -127,6 +127,26 @@ tsconfig.json または jsconfig.jsonのbaseUrlとpathsを変更することで�
 https://nextjs.org/docs/app/getting-started/project-structure
 
 
+## node.jsのサーバーを止めたい時
+開発中の Node.js プロセスをまとめて停止できます：
+```
+pkill -f node
+```
+特定ポートだけ止めたい場合：
+```
+lsof -i :3000     # 3000番ポートを使っているプロセスを確認
+kill -9 <PID>     # PID を指定して強制終了
+```
+
+## ビルドがうまくいかない時
+Next.js のキャッシュやビルドが壊れた場合：
+```
+rm -rf ".next"    # ビルドキャッシュ削除
+npm run dev       # 開発サーバー再起動
+```
+
+- .next を削除すると routes-manifest.json や page.js などの生成ファイルが再作成 される
+- フォルダ名に空白がある場合は、エラーの原因になることもあるので注意
 
 ---
 
