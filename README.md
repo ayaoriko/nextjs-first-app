@@ -126,6 +126,13 @@ tsconfig.json または jsconfig.jsonのbaseUrlとpathsを変更することで�
 ## フォルダ構成
 https://nextjs.org/docs/app/getting-started/project-structure
 
+- src/app 配下→ ページ・ルート・レイアウト専用。Next.js が自動でルーティングを管理する。
+- src/ui 配下→ 再利用可能コンポーネント専用。ページやレイアウトから自由にインポートできる。
+
+tsconfig.json で baseUrl を src/ にしておけば、簡単にインポートできます。
+```
+import SideNav from '@/ui/dashboard/sideNav';
+```
 
 ## node.jsのサーバーを止めたい時
 開発中の Node.js プロセスをまとめて停止できます：

@@ -1,3 +1,4 @@
+// UIフォルダは再利用可能コンポーネント専用
 /* ui/post.tsx （一覧表示用コンポーネント） */
 
 import Link from 'next/link'

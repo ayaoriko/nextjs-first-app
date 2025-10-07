@@ -1,4 +1,14 @@
 [
-  { "id": "post-1", "title": "記事1", "content": "内容1" },
-  { "id": "post-2", "title": "記事2", "content": "内容2" }
+  {
+    "id": "post-1",
+    "title": "記事1",
+    "content": "内容1",
+    "likes": 0
+  },
+  {
+    "id": "post-2",
+    "title": "記事2",
+    "content": "内容2",
+    "likes": 0
+  }
 ]

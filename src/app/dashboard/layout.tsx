@@ -1,6 +1,7 @@
+import SideNav from '@/ui/dashboard/sideNav';
+
 // /dashboard 用レイアウト
-// ここでは HTML ルート要素は書かない
-// <div> や <main> でラップして <header> やコンテンツを置く
+// DashboardLayout という名前は変更してもOK
 export default function DashboardLayout({
   children,
 }: {
@@ -12,7 +13,7 @@ export default function DashboardLayout({
       <header style={{ background: '#eee', padding: '1rem' }}>
         Dashboard Header
       </header>
-
+      <SideNav />
       {/* ページコンテンツ */}
       <main style={{ padding: '1rem' }}>{children}</main>
     </div>

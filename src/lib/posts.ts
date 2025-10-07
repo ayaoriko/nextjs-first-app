@@ -1,4 +1,4 @@
-// ダミーデータ設定
+// libフォルダはデータ設定用
 
 // Node.js の ファイル操作用モジュール を読み込む
 //fs は File System の略
@@ -24,7 +24,7 @@ export type PostType = {
 // API 呼び出しやファイル読み込みなど、実際の非同期処理をイメージするとわかりやすい
 export async function getPosts(): Promise<PostType[]> {
   //「プロジェクトルート + src/lib/posts.json」の 絶対パス を作っている
-// cwd は current working directory（カレント作業ディレクトリ） の略
+  // cwd は current working directory（カレント作業ディレクトリ） の略
   // Node.js を起動した プロジェクトのルートフォルダ のパスを返す
   // path.join(...)は複数のパスを OS に合わせて正しく結合 してくれる関数
   // Mac/Linux では /、Windows では \ を自動で使う
@@ -43,9 +43,9 @@ export async function getPosts(): Promise<PostType[]> {
 /// 投稿が見つかれば PostType
 // 見つからなければ undefined
 export async function getPost(id: string): Promise<PostType | undefined> {
-     // await getPosts() にすることで Promise が解決した後の配列 を受け取れる。
-    // もし await をつけないと、posts はまだ Promise なので .find は使えずエラーになります
-    const posts = await getPosts()
-    // posts.find((p) => p.id === id) で ID が一致する投稿を探す
-    return posts.find((p) => p.id === id)
+  // await getPosts() にすることで Promise が解決した後の配列 を受け取れる。
+  // もし await をつけないと、posts はまだ Promise なので .find は使えずエラーになります
+  const posts = await getPosts()
+  // posts.find((p) => p.id === id) で ID が一致する投稿を探す
+  return posts.find((p) => p.id === id)
 }
