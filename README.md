@@ -123,37 +123,139 @@ tsconfig.json または jsconfig.jsonのbaseUrlとpathsを変更することで�
 上記の@/の書き方なら、チュートリアルの@/components/* や @/styles/*の指定は不要。
 設定後、VS Code で認識させるには TypeScript サーバーの再起動 または ワークスペースバージョンの再選択 が必要
 
+
 ## フォルダ構成
-https://nextjs.org/docs/app/getting-started/project-structure
+参考サイト：https://nextjs.org/docs/app/getting-started/project-structure
 
-- src/app 配下→ ページ・ルート・レイアウト専用。Next.js が自動でルーティングを管理する。
-- src/ui 配下→ 再利用可能コンポーネント専用。ページやレイアウトから自由にインポートできる。
-
+### importのURLについて
 tsconfig.json で baseUrl を src/ にしておけば、簡単にインポートできます。
 ```
 import SideNav from '@/ui/dashboard/sideNav';
 ```
 
-## node.jsのサーバーを止めたい時
-開発中の Node.js プロセスをまとめて停止できます：
+### フォルダ構成
+- src/ui 配下→ 再利用可能コンポーネント専用。ページやレイアウトから自由にインポートできる。
+- src/lib 配下→ データ取得や API 呼び出し用のモジュール を置く場所
+- src/app 配下→ ページ・ルート・レイアウト専用。Next.js が自動でルーティングを管理する。
+- src/app/[〜] 配下 → 記事詳細ページなどの動的ルート。URL の id に対応する記事を表示。ページコンポーネントの引数 params から params.〜 を取得して記事を取得するため、[id] や [name] など名称はサイトによって異なる。
+- src/app/(〜) 配下→ルートグループ用フォルダ。ページ構造を整理するためのフォルダで、URL には反映されない。src/app/(dashboard)/page.tsx → /page としてアクセスされる
+
+### ルーティングファイル
+- layout.jsx：ページの大枠
+- page.jsx：各ページ
+- loading.jsx：読み込み中ページ
+- not-found.jsx：404専用ページ。存在しないページにアクセスした場合に表示される。
+- error.jsx：その他のエラーページ。サーバーエラーや予期せぬ例外時に表示される。
+
+### CSSの名称について
+- globals.css → サイト全体に適用されるスタイル。ボディのフォントやリンク色など、全ページ共通の見た目を整える。src/app/layout.tsx 内で import './globals.css' として読み込む必要がある。
+- XXX.module.css → コンポーネント単位のローカルスタイル。他のコンポーネントに影響しないスコープ付きCSSで、className={styles.XXX} のように指定して使う。※ ページ単位（例：page.module.css）や UI パーツ単位（例：Button.module.css）で管理するのが一般的。
+
+```
+import styles from './Button.module.css';
+
+export default function Button({ children }: { children: React.ReactNode }) {
+  return <button className={styles.button}>{children}</button>;
+}
+```
+
+## ページがうまく開かない時
+- package.json に下記内容を追記することで、npm run clean で一括対応可能。
+（ビルドキャッシュ削除＋ポート開放をまとめて実行）
+```
+"scripts": {
+    "clean":"rm -rf '.next' && kill -9 $(lsof -ti:3000)"
+}
+```
+※Mac専用コマンド。Windowsの場合は rmdir /s /q .next などに置き換える。
+
+### node.jsのサーバーを止めたい時
+基本は 3000 ポートを使うが、バックグラウンドでサーバーが残っているとポート競合が発生し、Next.js が自動で別ポート（3001など）を割り当てることがある。
+その場合、開発サーバーを明示的に停止してリセットする。
+
+開発中の Node.js プロセスをまとめて停止する場合：
 ```
 pkill -f node
 ```
-特定ポートだけ止めたい場合：
+3000番ポートだけ止めたい場合：
 ```
-lsof -i :3000     # 3000番ポートを使っているプロセスを確認
-kill -9 <PID>     # PID を指定して強制終了
+kill -9 $(lsof -ti:3000)
 ```
 
-## ビルドがうまくいかない時
-Next.js のキャッシュやビルドが壊れた場合：
+### ビルドがうまくいかない時
+Next.js のキャッシュやビルドが壊れた場合、.nextを削除する。
+.next を削除すると routes-manifest.json や page.js などの生成ファイルが再作成 される
 ```
 rm -rf ".next"    # ビルドキャッシュ削除
 npm run dev       # 開発サーバー再起動
 ```
-
-- .next を削除すると routes-manifest.json や page.js などの生成ファイルが再作成 される
+- MacとWindowsでコマンドが若干違う。例：Macでは rm -rf、Windowsでは rmdir /s /q や del /s /q を使う。
 - フォルダ名に空白がある場合は、エラーの原因になることもあるので注意
+
+## 日付の操作について
+日付操作ライブラリdayjsをインストールしておくと楽。
+```
+npm install dayjs
+```
+下記のようにすることで、日付を簡単にフォーマットできる。
+```
+import dayjs from 'dayjs';
+const formattedDate = dayjs(post.publishedAt).format('YY.MM.DD');
+```
+
+## metaタグの設定方法
+generateMetadata を使うと 動的にタイトルや説明文を生成 できる
+https://nextjs.org/docs/app/getting-started/metadata-and-og-images
+
+```
+import type { Metadata } from 'next';
+（...中略...）
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: `MicroCMS記事一覧`,
+    description: `MicroCMS記事一覧ページです`,
+  };
+}
+```
+
+# microCMSについて
+下記ページを参考にして構築。
+https://blog.microcms.io/microcms-next15-jamstack-blog/
+
+
+MicroCMSを利用する場合は、公式で配布されているmicrocms-js-sdkをインストールする必要がある
+https://github.com/microcmsio/microcms-js-sdk
+```
+npm install microcms-js-sdk
+```
+
+.env ファイルに microCMS のドメイン・APIキーを設定します：
+```
+MICROCMS_SERVICE_DOMAIN=あなたのサービスドメイン
+MICROCMS_API_KEY=あなたのAPIキー
+```
+
+その後、src/lib/microcms.ts（※libs でも OK） に以下を定義します。
+```
+// libs/microcms.ts
+import { createClient } from 'microcms-js-sdk';
+
+// 環境変数にMICROCMS_SERVICE_DOMAINが設定されていない場合はエラーを投げる
+if (!process.env.MICROCMS_SERVICE_DOMAIN) {
+  throw new Error('MICROCMS_SERVICE_DOMAIN is required');
+}
+
+// 環境変数にMICROCMS_API_KEYが設定されていない場合はエラーを投げる
+if (!process.env.MICROCMS_API_KEY) {
+  throw new Error('MICROCMS_API_KEY is required');
+}
+
+// Client SDKの初期化を行う
+export const client = createClient({
+  serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN,
+  apiKey: process.env.MICROCMS_API_KEY,
+});
+```
 
 ---
 

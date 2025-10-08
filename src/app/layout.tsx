@@ -2,6 +2,7 @@
 'use client' // ← これも超重要！
 // usePathname は Next.jsのクライアントサイドフック（ルーティング情報を取得する関数）
 // → next/navigation から import 必須！
+import './globals.css';
 import { usePathname } from 'next/navigation'
 import React from 'react'
 

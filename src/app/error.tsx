@@ -9,8 +9,8 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
 
     return (
         <div>
-            <h1>Something went wrong!</h1>
-            <button onClick={() => reset()}>Try again</button>
+            <h1>予期せぬエラーが発生しました。</h1>
+            <button onClick={() => reset()}>もう一度試す</button>
         </div>
     )
 }
