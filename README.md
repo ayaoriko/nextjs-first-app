@@ -138,6 +138,8 @@ import SideNav from '@/components/dashboard/sideNav';
 - src/lib 配下→ データ取得や API 呼び出し用のモジュール を置く場所
 - src/app 配下→ ページ・ルート・レイアウト専用。Next.js が自動でルーティングを管理する。
 - src/app/[〜] 配下 → 記事詳細ページなどの動的ルート。URL の id に対応する記事を表示。ページコンポーネントの引数 params から params.〜 を取得して記事を取得するため、[id] や [name] など名称はサイトによって異なる。
+- src/app/[[~]]配下 → 1 階層以上の URL にマッチ。例: /microcms/page/2 はOK、/microcms/ はNG
+- src/app/[[...~]]配下 →URL の末尾が存在しなくてもマッチ。例: /microcms/ と /microcms/page/2 の両方に対応可能
 - src/app/(〜) 配下→ルートグループ用フォルダ。ページ構造を整理するためのフォルダで、URL には反映されない。src/app/(dashboard)/page.tsx → /page としてアクセスされる
 
 ### ルーティングファイル

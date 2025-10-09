@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import BlogCategoryList from '@/components/microcms/BlogCategoryList';
+import { createMetadata } from "@/lib/createMetadata";
 
 export default async function CategoryListPage() {
   return (
@@ -14,9 +15,15 @@ export default async function CategoryListPage() {
 }
 
 // ここから動的メタデータ設定
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  return {
-    title: `カテゴリーの記事一覧`,
-    description: `カテゴリー一覧ページです`,
-  };
+export async function generateMetadata(): Promise<Metadata> {
+  const path = `/microcms/category`;
+
+  const title = `カテゴリーの記事一覧`;
+  const description = `カテゴリー一覧ページです`;
+
+  return createMetadata({
+    title,
+    description,
+    path,
+  });
 }

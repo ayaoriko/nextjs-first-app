@@ -8,6 +8,9 @@ type Props = {
 };
 
 export default function Pagination({ currentPage, totalPageCount, basePath }: Props) {
+    if (currentPage === 1 && totalPageCount === 1) {
+        return null;
+    }
     return (
         <nav>
             {currentPage > 1 && (

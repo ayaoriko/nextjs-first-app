@@ -5,6 +5,7 @@ import styles from './page.module.css'; // 追加
 import dayjs from 'dayjs';
 import type { Metadata } from 'next';
 import { getBlogPost } from '@/controllers/blogController';
+import { createMetadata } from "@/lib/createMetadata";
 
 // 記事詳細ページの生成
 export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
@@ -37,9 +38,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const { id } = await params; // Next.js 13+ の App Router だと、同期的に params を取得してはいけないため、await して解決
   const post = await getBlogPost(id);
+  const path = `/microcms/${id}`;
 
-  return {
-    title: post.title,
-    description: post.body.slice(0, 100),
-  };
+  const title = post.title;
+  const description = post.body.slice(0, 100);
+
+  return createMetadata({
+    title,
+    description,
+    path,
+  });
 }
