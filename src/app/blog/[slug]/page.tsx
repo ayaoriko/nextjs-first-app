@@ -1,6 +1,6 @@
 // app/blog/[slug]/page.tsx （個別ページ）
 import { getPost } from '@/lib/posts'
-import LikeButton from '@/ui/like-button';
+import LikeButton from '@/components/like-button';
 import Link from 'next/link';
 
 export default async function Page({ params }: Props) {

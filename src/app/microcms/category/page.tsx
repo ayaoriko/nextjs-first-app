@@ -1,22 +1,13 @@
 // src/app/microcms/category/page.tsx
-import { client } from '@/lib/microcms';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import BlogCategoryList from '@/components/microcms/BlogCategoryList';
 
 export default async function CategoryListPage() {
-  const data = await client.get({ endpoint: 'categories' }); // microCMSのカテゴリ取得
-  const categories = data.contents;
-
   return (
     <main>
       <h1>カテゴリ一覧</h1>
-      <ul>
-        {categories.map((cat: { id: string; name: string }) => (
-          <li key={cat.id}>
-            <Link href={`/microcms/category/${cat.id}`}>{cat.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <BlogCategoryList />
       <Link href="/microcms">Back to MicroCMS</Link>
     </main>
   );

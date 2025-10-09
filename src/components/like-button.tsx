@@ -1,4 +1,4 @@
-// app/ui/like-button.tsx
+// app/components/like-button.tsx
 'use client';
 
 import { useState } from 'react';

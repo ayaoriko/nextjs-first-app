@@ -1,4 +1,4 @@
-import SideNav from '@/ui/dashboard/sideNav';
+import SideNav from '@/components/dashboard/sideNav';
 
 // /dashboard 用レイアウト
 // DashboardLayout という名前は変更してもOK

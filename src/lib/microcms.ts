@@ -16,3 +16,14 @@ export const client = createClient({
     serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN,
     apiKey: process.env.MICROCMS_API_KEY,
 });
+
+// 1ページあたりの表示件数
+export const BLOG_LIMIT = 2;
+
+// APIのエンドポイントを定義
+export const ROUTES = {
+    basePath: '/microcms',
+    categoryPath: '/microcms/category',
+    blog: 'blog',
+    category: 'categories',
+};

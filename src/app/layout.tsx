@@ -16,22 +16,20 @@ export default function RootLayout({
 }) {
   const pathname = usePathname()
   const isDashboard = pathname.startsWith('/dashboard')
-  
+
   // <html> の直下には <head> と <body> しか置けません
   return (
     <html lang="ja">
-      <title>初めてのNextJS</title>
       <body>
-          {/* 共通ヘッダー */}
-          {!isDashboard && (
-        <header style={{ background: '#eee', padding: '1rem' }}>
-          共通ヘッダー
-        </header>
+        {/* 共通ヘッダー */}
+        {!isDashboard && (
+          <header style={{ background: '#eee', padding: '1rem' }}>
+            共通ヘッダー
+          </header>
         )}
 
         {/* ページごとのコンテンツ */}
         <main>{children}</main>
-        
       </body>
     </html>
   )

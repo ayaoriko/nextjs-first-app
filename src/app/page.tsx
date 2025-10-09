@@ -2,6 +2,8 @@ import Image from 'next/image'
 // aタグはクリックすると ブラウザがページ全体を再読み込みするため、ページ遷移の速度が遅い。
 //  Linkコンポーネントを使うと、ブラウザの再読み込みが発生しないので、ページ遷移が高速化される。ページ遷移時に 必要な部分だけを差し替えるSPAのような動作。
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
 export default function Page() {
   return (
     <>
@@ -12,4 +14,11 @@ export default function Page() {
       <Link href="dashboard">Go to Dashboard</Link>
     </>
   )
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `初めてのNextJS`,
+    description: `NextJSの練習用アプリです`,
+  };
 }

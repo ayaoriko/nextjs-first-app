@@ -130,11 +130,11 @@ tsconfig.json または jsconfig.jsonのbaseUrlとpathsを変更することで�
 ### importのURLについて
 tsconfig.json で baseUrl を src/ にしておけば、簡単にインポートできます。
 ```
-import SideNav from '@/ui/dashboard/sideNav';
+import SideNav from '@/components/dashboard/sideNav';
 ```
 
 ### フォルダ構成
-- src/ui 配下→ 再利用可能コンポーネント専用。ページやレイアウトから自由にインポートできる。
+- src/components 配下→ 再利用可能コンポーネント専用。ページやレイアウトから自由にインポートできる。
 - src/lib 配下→ データ取得や API 呼び出し用のモジュール を置く場所
 - src/app 配下→ ページ・ルート・レイアウト専用。Next.js が自動でルーティングを管理する。
 - src/app/[〜] 配下 → 記事詳細ページなどの動的ルート。URL の id に対応する記事を表示。ページコンポーネントの引数 params から params.〜 を取得して記事を取得するため、[id] や [name] など名称はサイトによって異なる。

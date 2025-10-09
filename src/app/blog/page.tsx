@@ -1,6 +1,6 @@
 // app/blog/page.tsx （一覧ページ）
 import { getPosts } from '@/lib/posts'
-import { Post } from '@/ui/post'
+import { Post } from '@/components/post'
 import Link from 'next/link';
 export default async function Page() {
   const posts = await getPosts()
