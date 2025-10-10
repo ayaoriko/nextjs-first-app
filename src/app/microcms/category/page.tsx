@@ -3,10 +3,17 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import BlogCategoryList from '@/components/microcms/BlogCategoryList';
 import { createMetadata } from "@/lib/createMetadata";
+import Breadcrumb from '@/components/microcms/Breadcrumb';
 
 export default async function CategoryListPage() {
+  const breadcrumbItems = [
+    { label: 'ホーム', href: '/' },
+    { label: 'ブログ', href: '/microcms' },
+    { label: 'カテゴリー' },
+  ];
   return (
     <main>
+      <Breadcrumb items={breadcrumbItems} />
       <h1>カテゴリ一覧</h1>
       <BlogCategoryList />
       <Link href="/microcms">Back to MicroCMS</Link>

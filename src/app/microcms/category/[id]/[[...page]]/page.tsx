@@ -5,6 +5,7 @@ import BlogPostList from '@/components/microcms/BlogPostList';
 import Pagination from '@/components/microcms/Pagination';
 import Link from 'next/link';
 import { createMetadata } from "@/lib/createMetadata";
+import Breadcrumb from '@/components/microcms/Breadcrumb';
 
 export default async function CategoryPagedPage({ params }: { params: Promise<{ id: string; page?: string[] }> }) {
   const resolvedParams = await params;
@@ -12,9 +13,18 @@ export default async function CategoryPagedPage({ params }: { params: Promise<{ 
   const { id, pageNum, posts, totalPages } = await fetchCategoryPageData(resolvedParams);
 
   const categoryName = posts[0] ? posts[0].category.name : '不明なカテゴリー';
+  const breadcrumbItems = [
+    { label: 'ホーム', href: '/' },
+    { label: 'ブログ', href: '/microcms' },
+    ...(pageNum > 1 ? [{ label: categoryName, href: `/microcms/category/${id}` }] : [{ label: categoryName }]),
+    // ... は配列やオブジェクトを展開する
+    // pushでもOKだけど、宣言と同時に作れるJSX などで「宣言と同時にマップ処理」したい場合に便利
+    ...(pageNum > 1 ? [{ label: `ページ ${pageNum}` }] : []),
+  ];
 
   return (
     <main>
+      <Breadcrumb items={breadcrumbItems} />
       <h1>カテゴリー: {categoryName}</h1>
       <BlogPostList posts={posts} />
       <Pagination currentPage={pageNum} totalPageCount={totalPages} basePath={`/microcms/category/${id}/page`} />

@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import type { Metadata } from 'next';
 import { getBlogPost } from '@/controllers/blogController';
 import { createMetadata } from "@/lib/createMetadata";
+import Breadcrumb from '@/components/microcms/Breadcrumb';
 
 // 記事詳細ページの生成
 export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,8 +22,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
   // dayjsを使ってpublishedAtをYY.MM.DD形式に変換
   const formattedDate = dayjs(post.publishedAt).format('YY.MM.DD');
 
+  const breadcrumbItems = [
+    { label: 'ホーム', href: '/' },
+    { label: 'ブログ', href: '/microcms/' },
+    ...(post.category ? [{ label: post.category.name, href: `/microcms/category/${post.category.id}` }] : []),
+    { label: `${post.title}` },
+  ];
+
   return (
     <main className={styles.main}>
+      <Breadcrumb items={breadcrumbItems} />
       <h1 className={styles.title}>{post.title}</h1> {/* タイトルを表示 */}
       <div className={styles.date}>{formattedDate}</div> {/* 日付を表示 */}
       {post.category &&

@@ -4,6 +4,7 @@ import BlogPostList from "@/components/microcms/BlogPostList";
 import Pagination from "@/components/microcms/Pagination";
 import { fetchPageData } from "@/lib/fetchPageData";
 import { createMetadata } from "@/lib/createMetadata";
+import Breadcrumb from '@/components/microcms/Breadcrumb';
 
 // params を必ずオプション付きで型定義する
 export default async function BlogListByPage({
@@ -14,9 +15,14 @@ export default async function BlogListByPage({
 }) {
     const resolvedParams = await params;
     const { pageNum, posts, totalPages } = await fetchPageData(resolvedParams);
-
+    const breadcrumbItems = [
+        { label: 'ホーム', href: '/' },
+        ...(pageNum > 1 ? [{ label: 'ブログ', href: `/microcms/` }] : [{ label: 'ブログ' }]),
+        ...(pageNum > 1 ? [{ label: `ページ ${pageNum}` }] : []),
+    ];
     return (
         <main>
+            <Breadcrumb items={breadcrumbItems} />
             <h1>ブログ記事一覧（ページ {pageNum}）</h1>
             <BlogPostList posts={posts} />
             <Pagination currentPage={pageNum} totalPageCount={totalPages} basePath="/microcms/page" />
